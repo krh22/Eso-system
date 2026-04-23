@@ -1,0 +1,15 @@
+﻿
+[2026-04-19] v7.0
+- Complete rebuild from v5.3
+- Dark terminal aesthetic (JetBrains Mono)
+- Added: live clock, date, day of week in header
+- Added: terminal tab with 7 working commands
+- Added: brain map SVG (seeded from brain_graph.json nodes)
+- Added: system log panel (right side, live feed)
+- Added: context copy panel (compressed handover for any AI)
+- Added: domain health dots (green = active, gray = no log)
+- Added: boredom button (surfaces neglected domain)
+- Added: AI inbox categoriser (keyword-based, Ollama planned)
+- Added: sync status indicator in sidebar
+- Removed: decorative neon effects, non-working buttons
+- Tabs: Today, Tasks, Domains, Inbox, Terminal, Brain map, Phases

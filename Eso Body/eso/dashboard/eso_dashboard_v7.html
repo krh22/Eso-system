@@ -1,0 +1,531 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;--bg1:#111;--bg2:#161616;--bg3:#1c1c1c;
+  --br:#222;--br2:#2a2a2a;
+  --ac:#00e5a0;--ac2:#00b37d;--ac3:rgba(0,229,160,.08);
+  --warn:#f5a623;--danger:#ff4d4d;--info:#4d9fff;
+  --txt:#e8e8e8;--txt2:#888;--txt3:#444;
+  --f:'JetBrains Mono',monospace;--fs:'Space Grotesk',sans-serif;
+}
+.dot-b, .dot-r {
+  width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-left: 6px; vertical-align: middle;
+}
+.dot-b { background: var(--info); box-shadow: 0 0 5px var(--info); } /* Working */
+.dot-r { background: var(--danger); box-shadow: 0 0 5px var(--danger); } /* Placeholder */
+
+body{background:var(--bg);color:var(--txt);font-family:var(--f);font-size:12px;height:680px;overflow:hidden;display:flex;flex-direction:column}
+/* HEADER */
+.hdr{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--br);background:var(--bg1);flex-shrink:0}
+.logo{font-size:15px;font-weight:700;letter-spacing:4px;color:var(--ac)}
+.hdr-mid{display:flex;align-items:center;gap:16px}
+.hdr-clock{font-size:18px;font-weight:300;color:#fff;letter-spacing:2px}
+.hdr-date{font-size:10px;color:var(--txt2);letter-spacing:1px}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.pill{font-size:10px;padding:3px 10px;border-radius:20px;border:1px solid;letter-spacing:.5px}
+.pill-ok{border-color:var(--ac);color:var(--ac);background:rgba(0,229,160,.07)}
+.pill-warn{border-color:var(--warn);color:var(--warn);background:rgba(245,166,35,.07)}
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:140px 1fr 240px;flex:1;overflow:hidden}
+/* SIDEBAR */
+.sidebar{border-right:1px solid var(--br);background:var(--bg1);display:flex;flex-direction:column;padding:8px 0}
+.nav-section{font-size:9px;color:var(--txt3);padding:12px 14px 4px;letter-spacing:1.5px;text-transform:uppercase}
+.ni{font-size:11px;color:var(--txt2);padding:7px 14px;cursor:pointer;border-left:2px solid transparent;display:flex;align-items:center;gap:7px;transition:all .15s;white-space:nowrap}
+.ni:hover{color:var(--txt);background:rgba(255,255,255,.03)}
+.ni.on{color:var(--ac);border-left-color:var(--ac);background:var(--ac3)}
+.ni-dot{width:5px;height:5px;border-radius:50%;background:var(--txt3);flex-shrink:0}
+.ni.on .ni-dot{background:var(--ac)}
+.spacer{flex:1}
+.sync-status{padding:10px 14px;border-top:1px solid var(--br);font-size:9px;color:var(--txt3);line-height:1.7}
+.sync-ok{color:var(--ac)}
+/* MAIN PANE */
+.main{overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--br) transparent}
+.main::-webkit-scrollbar{width:3px}
+.main::-webkit-scrollbar-thumb{background:var(--br2)}
+.pane{padding:16px;display:none}
+.pane.on{display:block}
+.sec-label{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--br)}
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--br);border-radius:6px;padding:12px;margin-bottom:10px}
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat-card{background:var(--bg2);border:1px solid var(--br);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:4px}
+.stat-val{font-size:16px;font-weight:700;color:var(--ac)}
+.stat-lbl{font-size:9px;color:var(--txt3);text-transform:uppercase}
+/* TASKS */
+.t-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid #1a1a1a;cursor:pointer;transition:background .1s}
+.t-row:last-child{border-bottom:none}
+.t-row:hover{background:rgba(255,255,255,.02);margin:0 -4px;padding-left:4px;padding-right:4px;border-radius:4px}
+.t-tick{width:12px;height:12px;border-radius:2px;border:1px solid var(--br2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.t-tick.u{border-color:var(--ac);box-shadow:0 0 6px rgba(0,229,160,.2)}
+.t-tick.warn{border-color:var(--warn)}
+.t-tick.done-tick{background:var(--ac);border-color:var(--ac)}
+.t-tick.done-tick::after{content:'✓';font-size:8px;color:#000;font-weight:700}
+.t-txt{flex:1;color:var(--txt);line-height:1.5}
+.t-txt.done{text-decoration:line-through;color:var(--txt3)}
+.t-tag{font-size:9px;padding:1px 6px;border-radius:3px;background:var(--bg3);color:var(--txt2);flex-shrink:0;border:1px solid var(--br)}
+/* PROGRESS BARS */
+.pbar-row{margin-bottom:10px}
+.pbar-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--txt2);margin-bottom:4px}
+.pbar{height:2px;background:var(--bg3);border-radius:1px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:1px;background:var(--ac);transition:width .6s ease}
+.pbar-fill.done-bar{background:var(--ac)}
+.pbar-fill.partial{background:var(--warn)}
+.pbar-fill.zero{background:var(--br2)}
+/* TERMINAL */
+.term-out{background:#050505;border:1px solid var(--br);border-radius:6px;padding:10px;height:220px;overflow-y:auto;font-size:11px;color:#0f0;line-height:1.7;scrollbar-width:thin;scrollbar-color:var(--br) transparent;margin-bottom:8px;white-space:pre-wrap;word-break:break-all}
+.term-row{display:flex;align-items:center;gap:6px;background:#050505;border:1px solid var(--br);border-radius:6px;padding:6px 10px}
+.term-prompt{color:var(--ac);font-size:11px;white-space:nowrap}
+.term-inp{flex:1;background:transparent;border:none;outline:none;color:#0f0;font-family:var(--f);font-size:11px}
+/* BRAIN MAP */
+.brain-wrap{background:var(--bg2);border:1px solid var(--br);border-radius:6px;padding:0;overflow:hidden;margin-bottom:10px}
+.brain-header{padding:8px 12px;border-bottom:1px solid var(--br);display:flex;justify-content:space-between;align-items:center}
+.brain-title{font-size:10px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px}
+.brain-badge{font-size:9px;color:var(--warn);border:1px solid var(--warn);padding:2px 7px;border-radius:3px}
+.brain-canvas{position:relative;height:200px;overflow:hidden}
+/* DUMP */
+.dump-inp{width:100%;background:var(--bg2);border:1px solid var(--br);border-radius:6px;padding:10px;color:var(--txt);font-family:var(--f);font-size:11px;resize:none;outline:none;line-height:1.7;transition:border-color .15s}
+.dump-inp:focus{border-color:var(--ac)}
+.dump-meta{display:flex;align-items:center;gap:8px;margin-top:8px}
+.btn-ac{padding:7px 16px;font-size:10px;font-weight:700;background:var(--ac);color:#000;border:none;border-radius:4px;cursor:pointer;letter-spacing:.5px;transition:opacity .15s}
+.btn-ac:hover{opacity:.85}
+.btn-ghost{padding:7px 14px;font-size:10px;background:transparent;color:var(--txt2);border:1px solid var(--br2);border-radius:4px;cursor:pointer;transition:all .15s}
+.btn-ghost:hover{border-color:var(--ac);color:var(--ac)}
+.ai-label{font-size:9px;color:var(--txt3);display:flex;align-items:center;gap:4px}
+.ai-dot{width:5px;height:5px;border-radius:50%;background:var(--ac);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.dump-entry{padding:7px 0;border-bottom:1px solid #1a1a1a;font-size:11px;line-height:1.5}
+.dump-entry:last-child{border-bottom:none}
+.dump-time{color:var(--txt3);font-size:9px;margin-bottom:2px}
+.dump-txt{color:var(--txt2)}
+.dump-cat{font-size:9px;padding:1px 6px;border-radius:3px;border:1px solid;margin-left:6px}
+.cat-task{color:var(--info);border-color:var(--info)}
+.cat-idea{color:var(--warn);border-color:var(--warn)}
+.cat-log{color:var(--ac);border-color:var(--ac)}
+.cat-ref{color:var(--txt2);border-color:var(--txt2)}
+/* DOMAINS */
+.dom-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.dom-card{background:var(--bg2);border:1px solid var(--br);border-radius:6px;padding:10px;cursor:pointer;transition:border-color .15s}
+.dom-card:hover{border-color:var(--br2)}
+.dom-card.active-dom{border-color:var(--ac)}
+.dom-name{font-size:11px;font-weight:500;color:var(--txt);margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.dom-status{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dom-last{font-size:10px;color:var(--txt3)}
+/* RIGHT PANEL */
+.rpanel{border-left:1px solid var(--br);background:var(--bg1);display:flex;flex-direction:column;overflow:hidden}
+.rp-section{padding:10px 12px;border-bottom:1px solid var(--br);flex-shrink:0}
+.rp-label{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.ctx-box{font-size:10px;color:var(--txt2);line-height:1.7;font-family:var(--f);max-height:120px;overflow-y:auto;scrollbar-width:none;white-space:pre-wrap}
+.mini-btn{padding:5px 10px;font-size:9px;background:var(--bg3);border:1px solid var(--br2);border-radius:3px;color:var(--txt2);cursor:pointer;margin-right:5px;margin-top:6px;transition:all .15s}
+.mini-btn:hover{border-color:var(--ac);color:var(--ac)}
+.log-entry{font-size:10px;color:var(--txt3);padding:5px 0;border-bottom:1px solid #1a1a1a;line-height:1.6}
+.log-entry:last-child{border-bottom:none}
+.log-ok{color:var(--ac)}
+.log-warn{color:var(--warn)}
+.log-err{color:var(--danger)}
+.rp-scroll{overflow-y:auto;flex:1;padding:10px 12px;scrollbar-width:none}
+/* FOOTER */
+.ftr{height:28px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-top:1px solid var(--br);background:var(--bg1);flex-shrink:0;font-size:9px;color:var(--txt3)}
+.ftr-beat{display:flex;align-items:center;gap:5px}
+/* ADD TASK FORM */
+.add-form{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.add-form input,.add-form select{padding:5px 8px;font-size:11px;font-family:var(--f);background:var(--bg2);border:1px solid var(--br2);border-radius:4px;color:var(--txt);outline:none;transition:border-color .15s}
+.add-form input{flex:1;min-width:80px}
+.add-form input:focus,.add-form select:focus{border-color:var(--ac)}
+.add-form select{font-size:10px}
+.bored{width:100%;margin-top:10px;padding:9px;font-size:10px;letter-spacing:.5px;background:transparent;border:1px dashed var(--br2);border-radius:4px;color:var(--txt3);cursor:pointer;transition:all .2s;font-family:var(--f)}
+.bored:hover{border-color:var(--warn);color:var(--warn)}
+</style>
+
+<div style="height:680px;display:flex;flex-direction:column;background:#0a0a0a;border-radius:8px;overflow:hidden;border:1px solid #222">
+
+<div class="hdr">
+  <div class="logo">ESO <span class="dot-b"></span></div>
+  <div class="hdr-mid">
+    <div class="hdr-clock" id="clk">00:00:00 <span class="dot-b"></span></div>
+    <div>
+      <div class="hdr-date" id="hdr-date">---</div>
+      <div class="hdr-date" id="hdr-day" style="color:#555">---</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <span class="pill pill-ok" id="prog-pill">95%</span>
+    <span class="pill pill-warn" id="sync-pill">SYNC NEEDED <span class="dot-r"></span></span>
+  </div>
+</div>
+
+<div class="layout">
+
+<div class="sidebar">
+  <div class="nav-section">Core</div>
+  <div class="ni on" onclick="go('today',this)"><span class="ni-dot"></span>Today <span class="dot-b"></span></div>
+  <div class="ni" onclick="go('tasks',this)"><span class="ni-dot"></span>Tasks <span class="dot-b"></span></div>
+  <div class="ni" onclick="go('domains',this)"><span class="ni-dot"></span>Domains <span class="dot-b"></span></div>
+  <div class="ni" onclick="go('stats',this)"><span class="ni-dot"></span>Stats <span class="dot-b"></span></div>
+  <div class="nav-section">Tools</div>
+  <div class="ni" onclick="go('dump',this)"><span class="ni-dot"></span>Inbox <span class="dot-b"></span></div>
+  <div class="ni" onclick="go('terminal',this)"><span class="ni-dot"></span>Terminal <span class="dot-b"></span></div>
+  <div class="nav-section">System</div>
+  <div class="ni" onclick="go('brain',this)"><span class="ni-dot"></span>Brain map <span class="dot-r"></span></div>
+  <div class="ni" onclick="go('phases',this)"><span class="ni-dot"></span>Phases <span class="dot-b"></span></div>
+  <div class="spacer"></div>
+  <div class="sync-status">
+    <div>MAIN: localhost</div>
+    <div>SECONDARY: offline</div>
+    <div class="sync-ok" style="margin-top:4px">● copy ESO_CORE/ + sessions/ to sync</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="pane on" id="p-today">
+    <div class="sec-label">Focus — top 5</div>
+    <div id="top5-list"></div>
+    <button class="bored" onclick="bored()">[ bored? tap for a neglected domain ] <span class="dot-b"></span></button>
+  </div>
+
+  <div class="pane" id="p-tasks">
+    <div class="sec-label">All tasks (max 20)</div>
+    <div id="all-list"></div>
+    <div class="add-form">
+      <input id="nt" placeholder="New task..." onkeydown="if(event.key==='Enter')addTask()" />
+      <select id="nu"><option value="5">Urgent</option><option value="3" selected>Normal</option><option value="1">Low</option></select>
+      <select id="nd"><option>system</option><option>food</option><option>gym</option><option>school</option><option>family</option><option>health</option><option>philosophy</option><option>adventure</option><option>fun</option></select>
+      <button class="btn-ac" onclick="addTask()">Add <span class="dot-b"></span></button>
+    </div>
+  </div>
+
+  <div class="pane" id="p-domains">
+    <div class="sec-label">Domain health</div>
+    <div class="dom-grid" id="dom-grid"></div>
+  </div>
+
+  <div class="pane" id="p-stats">
+    <div class="sec-label">Life Statistics <span class="dot-b"></span></div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-lbl">Health: Water</div>
+        <div class="stat-val">2.4L <span style="font-size:9px; color:#555">/ 3L</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Health: Sleep</div>
+        <div class="stat-val">7.2h <span style="font-size:9px; color:#555">/ 8h</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Health: Weight</div>
+        <div class="stat-val">78.5kg</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Gym: Frequency</div>
+        <div class="stat-val">4x <span style="font-size:9px; color:#555">weekly</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Tasks Done (Today)</div>
+        <div class="stat-val" id="stats-done">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">System Uptime</div>
+        <div class="stat-val" id="stats-uptime">0h</div>
+      </div>
+    </div>
+    <div style="margin-top:15px; font-size:10px; color:var(--txt3)">Note: Health data pulled from 07_Life_Domains/health.md placeholders. Real-time integration planned. <span class="dot-r"></span></div>
+  </div>
+
+  <div class="pane" id="p-dump">
+    <div class="sec-label">Brain dump — AI sorts this</div>
+    <textarea class="dump-inp" id="dump-in" rows="4" placeholder="Type anything. Raw thoughts, tasks, ideas, logs. AI categorises automatically.&#10;&#10;Ctrl+Enter to commit."></textarea>
+    <div class="dump-meta">
+      <button class="btn-ac" onclick="commitDump()">Commit <span class="dot-b"></span></button>
+      <div class="ai-label"><span class="ai-dot"></span>Ollama sorts on main PC <span class="dot-r"></span></div>
+    </div>
+    <div style="margin-top:14px">
+      <div class="sec-label">Sorted entries</div>
+      <div id="dump-list"></div>
+    </div>
+  </div>
+
+  <div class="pane" id="p-terminal">
+    <div class="sec-label">Machine terminal — simulated</div>
+    <div class="term-out" id="term-out">ESO Terminal v1.0 — type 'help' for commands
+> ready</div>
+    <div class="term-row">
+      <span class="term-prompt">ryan@eso:~$</span>
+      <input class="term-inp" id="term-inp" placeholder="type command..." onkeydown="termKey(event)" autocomplete="off" spellcheck="false" />
+    </div>
+    <div style="margin-top:8px;font-size:10px;color:var(--txt3)">Note: connects to real machine when served locally via Node.js</div>
+  </div>
+
+  <div class="pane" id="p-brain">
+    <div class="sec-label">Visual brain map</div>
+    <div class="brain-wrap">
+      <div class="brain-header">
+        <span class="brain-title">brain_graph.json — node map</span>
+        <span class="brain-badge">not connected <span class="dot-r"></span></span>
+      </div>
+      <div class="brain-canvas" id="brain-canvas"></div>
+    </div>
+    <div style="font-size:10px;color:var(--txt3);line-height:1.8;padding:4px 0">
+      Live map feeds from brain_graph.json via Obsidian.<br>
+      To connect: serve eso/brain_graph.json locally and point this dashboard to it.<br>
+      Nodes shown below are seeded from current system state.
+    </div>
+  </div>
+
+  <div class="pane" id="p-phases">
+    <div class="sec-label">Build phases</div>
+    <div id="phases-list"></div>
+  </div>
+
+</div>
+
+<div class="rpanel">
+  <div class="rp-section">
+    <div class="rp-label">Context — copy for AI</div>
+    <div class="ctx-box" id="ctx-box"></div>
+    <button class="mini-btn" onclick="copyCtx()">Copy context <span class="dot-b"></span></button>
+    <button class="mini-btn" onclick="go('dump',document.querySelectorAll('.ni')[3])">Open inbox <span class="dot-b"></span></button>
+  </div>
+  <div class="rp-section" style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+    <div class="rp-label">System log</div>
+    <div class="rp-scroll" id="sys-log"></div>
+  </div>
+</div>
+
+</div>
+
+<div class="ftr">
+  <div class="ftr-beat"><span class="ai-dot"></span><span>system active</span></div>
+  <span id="ftr-saved">not saved</span>
+  <span id="ftr-uptime"></span>
+</div>
+</div>
+
+<script>
+const DOMAINS=['food','gym','school','family','health','relationships','philosophy','adventure','fun'];
+const PHASES=[
+  {n:'Sovereign core',p:100},{n:'Capture',p:100},{n:'Templates',p:100},
+  {n:'Foundation docs',p:100},{n:'AI integration',p:100},
+  {n:'Automation',p:75},{n:'Visual brain',p:0},{n:'Backup',p:50}
+];
+const NODES=[
+  {id:'core',label:'Ryan',x:120,y:100,color:'#00e5a0',r:14},
+  {id:'system',label:'Eso OS',x:120,y:100,color:'#4d9fff',r:10},
+  {id:'food',label:'food',x:0,y:0,color:'#f5a623',r:7},
+  {id:'gym',label:'gym',x:0,y:0,color:'#f5a623',r:7},
+  {id:'school',label:'school',x:0,y:0,color:'#f5a623',r:7},
+  {id:'family',label:'family',x:0,y:0,color:'#f5a623',r:7},
+  {id:'health',label:'health',x:0,y:0,color:'#f5a623',r:7},
+  {id:'philosophy',label:'philo',x:0,y:0,color:'#cc88ff',r:7},
+  {id:'adventure',label:'adventr',x:0,y:0,color:'#ff6b6b',r:7},
+  {id:'fun',label:'fun',x:0,y:0,color:'#ff6b6b',r:7},
+];
+const CMDS={
+  help:()=>`Available commands:\n  status    — show system status\n  progress  — show phase progress\n  tasks     — list top 5 tasks\n  sync      — show sync instructions\n  clear     — clear terminal\n  date      — show current date/time`,
+  status:()=>`ESO Life OS — v6.0\nProgress: ${Math.round(PHASES.reduce((a,b)=>a+b.p,0)/PHASES.length)}%\nMain PC: localhost\nSecondary PC: offline\nOllama: localhost:11434\nn8n: localhost:5678`,
+  progress:()=>PHASES.map(p=>`${p.n.padEnd(20)} ${p.p}%`).join('\n'),
+  tasks:()=>{const t=S.tasks.filter(x=>!x.done).sort((a,b)=>b.u-a.u).slice(0,5);return t.length?t.map((t,i)=>`${i+1}. [${t.d}] ${t.text}`).join('\n'):'No active tasks.'},
+  sync:()=>`Sync protocol:\n1. Copy ESO_CORE/ to flash drive\n2. Copy eso/sessions/ to flash drive\n3. Paste on main PC\n4. n8n + Ollama process automatically`,
+  date:()=>new Date().toString(),
+  clear:()=>{document.getElementById('term-out').textContent='ESO Terminal v1.0\n> ready';return null}
+};
+
+const DEFAULT=[
+  {text:'Import 10 n8n workflows on localhost:5678',u:5,d:'system',done:false},
+  {text:'Add Claude + Notion API keys to .env',u:5,d:'system',done:false},
+  {text:'Fill in ai-tools.md personal notes',u:5,d:'system',done:false},
+  {text:'Restore meal + gym data from backup drive',u:4,d:'system',done:false},
+  {text:'Set goals in food, gym, school domain files',u:4,d:'system',done:false},
+  {text:'Create remaining 6 domain files',u:4,d:'system',done:false},
+  {text:'Test eso-brain.ps1 offline chat',u:3,d:'system',done:false},
+  {text:'Write life goals in goals.md',u:3,d:'system',done:false},
+];
+const SYSLOG=[
+  {t:'INFO',msg:'claude-context.md created',time:'19 Apr 00:00'},
+  {t:'INFO',msg:'runbook.md updated — session close protocol added',time:'19 Apr 00:00'},
+  {t:'INFO',msg:'domain template created (food, gym, school)',time:'19 Apr 00:00'},
+  {t:'INFO',msg:'paths.json + file-paths.md synced',time:'19 Apr 00:00'},
+  {t:'INFO',msg:'handover.md updated — 95% progress',time:'19 Apr 00:00'},
+  {t:'WARN',msg:'n8n workflows not yet imported',time:'19 Apr 00:00'},
+  {t:'WARN',msg:'Ollama sorter not yet wired to inbox',time:'19 Apr 00:00'},
+];
+
+let S={tasks:[...DEFAULT],dumps:[],domainLog:{}};
+const startTime=Date.now();
+
+async function load(){
+  try{const r=await window.storage.get('eso-v7');if(r&&r.value)S=JSON.parse(r.value);}catch(e){}
+  render();
+}
+async function save(){
+  try{
+    await window.storage.set('eso-v7',JSON.stringify(S));
+    document.getElementById('ftr-saved').textContent='saved '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  }catch(e){}
+}
+
+function score(t){return(t.done?-99:0)+t.u*2}
+
+function render(){
+  const now=new Date();
+  document.getElementById('clk').textContent=now.toLocaleTimeString([],{hour12:false});
+  document.getElementById('hdr-date').textContent=now.toLocaleDateString([],{month:'short',day:'numeric',year:'numeric'});
+  document.getElementById('hdr-day').textContent=now.toLocaleDateString([],{weekday:'long'});
+  const up=Math.floor((Date.now()-startTime)/60000);
+  document.getElementById('ftr-uptime').textContent='uptime '+up+'m';
+
+  const sorted=[...S.tasks].sort((a,b)=>score(b)-score(a));
+  const top5=sorted.filter(t=>!t.done).slice(0,5);
+  const avg=Math.round(PHASES.reduce((a,b)=>a+b.p,0)/PHASES.length);
+  document.getElementById('prog-pill').textContent=avg+'%';
+
+  document.getElementById('top5-list').innerHTML=top5.length?top5.map((t,i)=>{
+    const idx=S.tasks.indexOf(t);
+    const tc=t.u>=5?'u':t.u>=3?'warn':'';
+    return`<div class="t-row" onclick="toggle(${idx})">
+      <div class="t-tick ${tc}"></div>
+      <div class="t-txt">${t.text}</div>
+      <div class="t-tag">${t.d}</div>
+    </div>`;
+  }).join(''):'<div style="padding:10px 0;color:var(--txt3);font-size:11px">All done. Add tasks in Tasks tab.</div>';
+
+  document.getElementById('all-list').innerHTML=sorted.map((t,i)=>{
+    const idx=S.tasks.indexOf(t);
+    const tc=t.done?'done-tick':t.u>=5?'u':t.u>=3?'warn':'';
+    return`<div class="t-row" onclick="toggle(${idx})">
+      <div class="t-tick ${tc}"></div>
+      <div class="t-txt ${t.done?'done':''}">${t.text}</div>
+      <div class="t-tag">${t.d}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('dom-grid').innerHTML=DOMAINS.map(d=>{
+    const has=S.domainLog[d]&&S.domainLog[d].length>0;
+    const last=has?S.domainLog[d][S.domainLog[d].length-1]:'no log yet';
+    const col=has?'#00e5a0':'#444';
+    return`<div class="dom-card ${has?'active-dom':''}" onclick="logDomain('${d}')">
+      <div class="dom-name"><span class="dom-status" style="background:${col}"></span>${d}</div>
+      <div class="dom-last">${last.slice(0,24)}${last.length>24?'...':''}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('phases-list').innerHTML=PHASES.map(p=>{
+    const cls=p.p===100?'done-bar':p.p===0?'zero':'partial';
+    return`<div class="pbar-row">
+      <div class="pbar-meta"><span>${p.n}</span><span>${p.p}%</span></div>
+      <div class="pbar"><div class="pbar-fill ${cls}" style="width:${p.p}%"></div></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('dump-list').innerHTML=S.dumps.length?S.dumps.slice().reverse().slice(0,10).map(d=>{
+    const cat=d.cat||'ref';
+    return`<div class="dump-entry">
+      <div class="dump-time">${d.time}</div>
+      <div class="dump-txt">${d.text}<span class="dump-cat cat-${cat}">${cat}</span></div>
+    </div>`;
+  }).join(''):'<div style="color:var(--txt3);font-size:11px;padding:6px 0">No entries yet.</div>';
+
+  document.getElementById('sys-log').innerHTML=SYSLOG.concat(S.extraLog||[]).slice(-12).reverse().map(l=>{
+    const cls=l.t==='ERROR'?'log-err':l.t==='WARN'?'log-warn':'log-ok';
+    return`<div class="log-entry"><span class="${cls}">[${l.t}]</span> ${l.msg}<br><span style="color:var(--txt3);font-size:9px">${l.time}</span></div>`;
+  }).join('');
+
+  const top3=top5.slice(0,3).map(t=>'• '+t.text).join('\n');
+  document.getElementById('ctx-box').textContent=`ESO v6 | ${now.toDateString()} | ${avg}%\n\nPriorities:\n${top3||'(none)'}\n\nRULES: Read claude-context.md first.\nNever touch ryan-instructions.txt.\nUpdate paths.json on file create.\nClose: update handover.md.`;
+
+  renderBrain();
+}
+
+function renderBrain(){
+  const canvas=document.getElementById('brain-canvas');
+  const W=canvas.offsetWidth||220,H=200;
+  const cx=W/2,cy=H/2,r=70;
+  const domains=NODES.filter(n=>n.id!=='core'&&n.id!=='system');
+  domains.forEach((n,i)=>{const a=(i/domains.length)*Math.PI*2-Math.PI/2;n.x=cx+Math.cos(a)*r;n.y=cy+Math.sin(a)*r;});
+  NODES.find(n=>n.id==='core').x=cx;NODES.find(n=>n.id==='core').y=cy;
+  NODES.find(n=>n.id==='system').x=cx;NODES.find(n=>n.id==='system').y=cy+28;
+
+  let svg=`<svg width="100%" height="${H}" style="display:block">`;
+  domains.forEach(n=>{
+    svg+=`<line x1="${cx}" y1="${cy}" x2="${n.x}" y2="${n.y}" stroke="#222" stroke-width="1"/>`;
+  });
+  NODES.forEach(n=>{
+    const active=n.id==='core'||n.id==='system'||(S.domainLog[n.id]&&S.domainLog[n.id].length>0);
+    const opacity=active?1:0.35;
+    svg+=`<circle cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${n.color}" opacity="${opacity}" />`;
+    svg+=`<text x="${n.x}" y="${n.y+n.r+10}" text-anchor="middle" font-size="9" fill="#666" font-family="JetBrains Mono,monospace">${n.label}</text>`;
+  });
+  svg+='</svg>';
+  canvas.innerHTML=svg;
+}
+
+function go(name,el){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  document.getElementById('p-'+name).classList.add('on');
+  el.classList.add('on');
+}
+function toggle(i){S.tasks[i].done=!S.tasks[i].done;render();save();}
+function addTask(){
+  const txt=document.getElementById('nt').value.trim();
+  if(!txt)return;
+  if(S.tasks.filter(t=>!t.done).length>=20){alert('20 task limit. Complete something first.');return;}
+  S.tasks.push({text:txt,u:parseInt(document.getElementById('nu').value),d:document.getElementById('nd').value,done:false});
+  document.getElementById('nt').value='';render();save();
+}
+function cats(txt){
+  const t=txt.toLowerCase();
+  if(/task|todo|do |need to|must|fix|build|create|setup/.test(t))return'task';
+  if(/idea|what if|maybe|could|should|imagine/.test(t))return'idea';
+  if(/did|went|had|ate|trained|worked|felt|ran|read/.test(t))return'log';
+  return'ref';
+}
+function commitDump(){
+  const v=document.getElementById('dump-in').value.trim();
+  if(!v)return;
+  const cat=cats(v);
+  S.dumps.push({text:v,time:new Date().toLocaleString(),cat});
+  if(!S.extraLog)S.extraLog=[];
+  S.extraLog.push({t:'INFO',msg:`inbox: "${v.slice(0,30)}..." → [${cat}]`,time:new Date().toLocaleTimeString()});
+  document.getElementById('dump-in').value='';
+  render();save();
+}
+function logDomain(d){
+  const e=prompt(`Log for ${d}:`);
+  if(!e)return;
+  if(!S.domainLog[d])S.domainLog[d]=[];
+  S.domainLog[d].push('['+new Date().toLocaleDateString()+'] '+e);
+  render();save();
+}
+function bored(){
+  const neg=DOMAINS.filter(d=>!S.domainLog[d]||!S.domainLog[d].length);
+  const pool=neg.length?neg:DOMAINS;
+  const pick=pool[Math.floor(Math.random()*pool.length)];
+  alert('Neglected domain: '+pick.toUpperCase()+'\nWhat is one small thing you can do here today?');
+}
+function termKey(e){
+  if(e.key!=='Enter')return;
+  const inp=document.getElementById('term-inp');
+  const cmd=inp.value.trim().toLowerCase();
+  inp.value='';
+  const out=document.getElementById('term-out');
+  const fn=CMDS[cmd];
+  const result=fn?fn():cmd===''?null:`Command not found: ${cmd}\nType 'help' for available commands.`;
+  if(result!==null)out.textContent+='\n> '+cmd+'\n'+result;
+  out.scrollTop=out.scrollHeight;
+}
+function copyCtx(){
+  navigator.clipboard.writeText(document.getElementById('ctx-box').textContent)
+    .then(()=>{const b=document.querySelector('.mini-btn');const orig=b.textContent;b.textContent='Copied!';setTimeout(()=>b.textContent=orig,1500);});
+}
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){
+    const d=document.getElementById('dump-in');
+    if(document.activeElement===d)commitDump();
+  }
+});
+load();
+setInterval(render,1000);
+setInterval(save,30000);
+</script>

@@ -1,0 +1,458 @@
+﻿{
+    "object":  "list",
+    "results":  [
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-80a5-ac2a-f45d13864447",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  false,
+                        "in_trash":  false,
+                        "type":  "divider",
+                        "divider":  {
+
+                                    },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-8040-bc85-ecbea76f75b6",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  false,
+                        "in_trash":  false,
+                        "type":  "heading_2",
+                        "heading_2":  {
+                                          "rich_text":  [
+                                                            {
+                                                                "type":  "text",
+                                                                "text":  {
+                                                                             "content":  "⏰ DAILY MEAL TIMES (24‑Hour Clock)",
+                                                                             "link":  null
+                                                                         },
+                                                                "annotations":  {
+                                                                                    "bold":  false,
+                                                                                    "italic":  false,
+                                                                                    "strikethrough":  false,
+                                                                                    "underline":  false,
+                                                                                    "code":  false,
+                                                                                    "color":  "default"
+                                                                                },
+                                                                "plain_text":  "⏰ DAILY MEAL TIMES (24‑Hour Clock)",
+                                                                "href":  null
+                                                            }
+                                                        ],
+                                          "is_toggleable":  false,
+                                          "color":  "default"
+                                      },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-8011-a173-ce22d99a81bf",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  true,
+                        "in_trash":  false,
+                        "type":  "table",
+                        "table":  {
+                                      "table_width":  4,
+                                      "has_column_header":  true,
+                                      "has_row_header":  false
+                                  },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-8076-b5aa-e5b42f77da35",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  false,
+                        "in_trash":  false,
+                        "type":  "divider",
+                        "divider":  {
+
+                                    },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-8088-afc1-e268c101d4d0",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  false,
+                        "in_trash":  false,
+                        "type":  "heading_2",
+                        "heading_2":  {
+                                          "rich_text":  [
+                                                            {
+                                                                "type":  "text",
+                                                                "text":  {
+                                                                             "content":  "🧭 How to Adapt for Your Energy Levels",
+                                                                             "link":  null
+                                                                         },
+                                                                "annotations":  {
+                                                                                    "bold":  false,
+                                                                                    "italic":  false,
+                                                                                    "strikethrough":  false,
+                                                                                    "underline":  false,
+                                                                                    "code":  false,
+                                                                                    "color":  "default"
+                                                                                },
+                                                                "plain_text":  "🧭 How to Adapt for Your Energy Levels",
+                                                                "href":  null
+                                                            }
+                                                        ],
+                                          "is_toggleable":  false,
+                                          "color":  "default"
+                                      },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-800a-b60b-ee522aec6e23",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  true,
+                        "in_trash":  false,
+                        "type":  "table",
+                        "table":  {
+                                      "table_width":  2,
+                                      "has_column_header":  true,
+                                      "has_row_header":  false
+                                  },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-80c4-aaa4-cc139976523c",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  false,
+                        "in_trash":  false,
+                        "type":  "divider",
+                        "divider":  {
+
+                                    },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-8040-953d-f05c6ba001fa",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  false,
+                        "in_trash":  false,
+                        "type":  "heading_2",
+                        "heading_2":  {
+                                          "rich_text":  [
+                                                            {
+                                                                "type":  "text",
+                                                                "text":  {
+                                                                             "content":  "🍽️ Example Day with Times \u0026 Pairings",
+                                                                             "link":  null
+                                                                         },
+                                                                "annotations":  {
+                                                                                    "bold":  false,
+                                                                                    "italic":  false,
+                                                                                    "strikethrough":  false,
+                                                                                    "underline":  false,
+                                                                                    "code":  false,
+                                                                                    "color":  "default"
+                                                                                },
+                                                                "plain_text":  "🍽️ Example Day with Times \u0026 Pairings",
+                                                                "href":  null
+                                                            }
+                                                        ],
+                                          "is_toggleable":  false,
+                                          "color":  "default"
+                                      },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-8075-949c-cdce79e1ab5a",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  true,
+                        "in_trash":  false,
+                        "type":  "table",
+                        "table":  {
+                                      "table_width":  4,
+                                      "has_column_header":  true,
+                                      "has_row_header":  false
+                                  },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-80e9-b83d-e3b4c17ec432",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  false,
+                        "in_trash":  false,
+                        "type":  "divider",
+                        "divider":  {
+
+                                    },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-805b-9ba5-d242fb3a5c51",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  false,
+                        "in_trash":  false,
+                        "type":  "heading_2",
+                        "heading_2":  {
+                                          "rich_text":  [
+                                                            {
+                                                                "type":  "text",
+                                                                "text":  {
+                                                                             "content":  "✅ Summary Table (Fixed Windows)",
+                                                                             "link":  null
+                                                                         },
+                                                                "annotations":  {
+                                                                                    "bold":  false,
+                                                                                    "italic":  false,
+                                                                                    "strikethrough":  false,
+                                                                                    "underline":  false,
+                                                                                    "code":  false,
+                                                                                    "color":  "default"
+                                                                                },
+                                                                "plain_text":  "✅ Summary Table (Fixed Windows)",
+                                                                "href":  null
+                                                            }
+                                                        ],
+                                          "is_toggleable":  false,
+                                          "color":  "default"
+                                      },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-8033-9932-c3aaf355f4e2",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:47:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  true,
+                        "in_trash":  false,
+                        "type":  "table",
+                        "table":  {
+                                      "table_width":  4,
+                                      "has_column_header":  true,
+                                      "has_row_header":  false
+                                  },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-8090-b5a2-c8f38c18d55a",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:47:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:48:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  false,
+                        "in_trash":  false,
+                        "type":  "paragraph",
+                        "paragraph":  {
+                                          "rich_text":  [
+
+                                                        ],
+                                          "icon":  null,
+                                          "color":  "default"
+                                      },
+                        "archived":  false
+                    },
+                    {
+                        "object":  "block",
+                        "id":  "32d6a925-6b52-80b1-be7f-e0a5730c99cb",
+                        "parent":  {
+                                       "type":  "page_id",
+                                       "page_id":  "32d6a925-6b52-80a9-841c-f1993c18c7ff"
+                                   },
+                        "created_time":  "2026-03-24T23:48:00.000Z",
+                        "last_edited_time":  "2026-03-24T23:48:00.000Z",
+                        "created_by":  {
+                                           "object":  "user",
+                                           "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                       },
+                        "last_edited_by":  {
+                                               "object":  "user",
+                                               "id":  "310d872b-594c-8172-80f0-00026b287a2e"
+                                           },
+                        "has_children":  false,
+                        "in_trash":  false,
+                        "type":  "paragraph",
+                        "paragraph":  {
+                                          "rich_text":  [
+
+                                                        ],
+                                          "icon":  null,
+                                          "color":  "default"
+                                      },
+                        "archived":  false
+                    }
+                ],
+    "next_cursor":  null,
+    "has_more":  false,
+    "type":  "block",
+    "block":  {
+
+              },
+    "request_id":  "acd1caa0-8364-4a89-9c75-b4eecfb15824"
+}
