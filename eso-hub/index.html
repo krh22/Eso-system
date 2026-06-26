@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ESO Hub</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a0f;
+      color: #e0e0e0;
+      padding: 0 0 70px 0;
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .container { max-width: 500px; margin: 0 auto; padding: 16px; }
+    h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .subtitle { font-size: 14px; color: #888; margin-bottom: 20px; }
+    .mode-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: #1a1a24;
+      border-radius: 12px;
+      padding: 6px;
+    }
+    .mode-btn {
+      flex: 1;
+      padding: 8px 0;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: #888;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mode-btn.active { background: #2a2a3a; color: #fff; }
+    .mode-btn:hover { color: #fff; }
+    .panel { display: none; animation: fadeIn 0.2s ease; }
+    .panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #12121a;
+      border-top: 1px solid #2a2a3a;
+      display: flex;
+      justify-content: space-around;
+      padding: 6px 0 10px 0;
+      z-index: 100;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: color 0.2s;
+    }
+    .nav-btn .icon { font-size: 20px; line-height: 1; }
+    .nav-btn.active { color: #7c7cf0; }
+    .nav-btn:hover { color: #aaa; }
+    .card {
+      background: #14141e;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid #222;
+    }
+    .card-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #ccc; }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      background: #1a1a28;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-size: 14px;
+      margin-bottom: 10px;
+      font-family: inherit;
+    }
+    textarea { resize: vertical; min-height: 60px; }
+    button {
+      padding: 10px 16px;
+      background: #4a4ad0;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #5a5ae0; }
+    button.secondary { background: #2a2a3a; }
+    button.secondary:hover { background: #3a3a4a; }
+    .entry-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #1a1a28;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .entry-item:last-child { border-bottom: none; }
+    .entry-tag { font-size: 11px; background: #2a2a3a; padding: 2px 8px; border-radius: 12px; color: #aaa; }
+    .small { font-size: 12px; color: #888; }
+    .flex { display: flex; gap: 8px; align-items: center; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .mt-8 { margin-top: 8px; }
+    .mb-8 { margin-bottom: 8px; }
+    .text-center { text-align: center; }
+    .badge { background: #4a4ad0; color: #fff; border-radius: 12px; padding: 2px 10px; font-size: 12px; }
+    #offline-banner { display: none; background: #c0392b; color: #fff; padding: 8px 16px; text-align: center; font-size: 13px; border-radius: 8px; margin-bottom: 12px; }
+    .chat-box { background: #0f0f18; border-radius: 12px; padding: 12px; max-height: 300px; overflow-y: auto; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .chat-msg { padding: 8px 12px; border-radius: 12px; max-width: 85%; word-wrap: break-word; }
+    .chat-msg.user { background: #2a2a4a; align-self: flex-end; }
+    .chat-msg.ai { background: #1a1a2a; align-self: flex-start; }
+    .chat-msg .role { font-size: 10px; color: #888; margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div id="offline-banner">📡 Offline — entries will sync when connected</div>
+  <div class="flex-between">
+    <div><h1>ESO Hub</h1><div class="subtitle">Ryan's Life OS</div></div>
+    <div><span class="badge" id="mode-badge">Mode: 1</span></div>
+  </div>
+
+  <div class="mode-selector">
+    <button class="mode-btn" data-mode="1" onclick="setMode(1)">Mode 1<br><span style="font-size:10px;color:#666;">Clear</span></button>
+    <button class="mode-btn" data-mode="2" onclick="setMode(2)">Mode 2<br><span style="font-size:10px;color:#666;">Social</span></button>
+    <button class="mode-btn" data-mode="3" onclick="setMode(3)">Mode 3<br><span style="font-size:10px;color:#666;">Emergency</span></button>
+  </div>
+
+  <div id="panel-dashboard" class="panel active">
+    <div class="card">
+      <div class="card-title">📊 Today's Summary</div>
+      <div id="dashboard-content"><p class="small">Loading...</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📌 Quick Actions</div>
+      <div class="flex" style="flex-wrap:wrap;gap:8px;">
+        <button onclick="switchPanel('inbox')" class="secondary">📥 Inbox</button>
+        <button onclick="switchPanel('log')" class="secondary">📝 Log</button>
+        <button onclick="switchPanel('chat')" class="secondary">💬 Chat</button>
+        <button onclick="switchPanel('build')" class="secondary">🔨 Build</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-chat" class="panel">
+    <div class="card">
+      <div class="card-title">💬 AI Chat</div>
+      <div class="chat-box" id="chat-box">
+        <div class="chat-msg ai"><div class="role">AI</div>Hello Ryan. I am your Master AI. How can I assist you today?</div>
+      </div>
+      <div class="flex">
+        <input type="text" id="chat-input" placeholder="Type your message..." style="flex:1;margin:0;">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+      <div class="mt-8 small"><span id="ai-status">Ready</span></div>
+    </div>
+  </div>
+
+  <div id="panel-inbox" class="panel">
+    <div class="card">
+      <div class="card-title">📥 Inbox</div>
+      <div class="flex">
+        <input type="text" id="inbox-input" placeholder="Quick entry..." style="flex:1;margin:0;">
+        <button onclick="addInbox()">Add</button>
+      </div>
+      <div id="inbox-list" class="mt-8"><p class="small">Loading...</p></div>
+    </div>
+  </div>
+
+  <div id="panel-log" class="panel">
+    <div class="card">
+      <div class="card-title">📝 Log Entry</div>
+      <select id="log-type">
+        <option value="expense">Expense</option>
+        <option value="food">Food</option>
+        <option value="mood">Mood</option>
+        <option value="task_done">Task Done</option>
+      </select>
+      <input type="number" id="log-amount" placeholder="Amount (if any)">
+      <select id="log-category">
+        <option value="food">Food</option>
+        <option value="transport">Transport</option>
+        <option value="social">Social</option>
+        <option value="bills">Bills</option>
+        <option value="hosting">Hosting</option>
+        <option value="savings">Savings</option>
+      </select>
+      <select id="log-mood">
+        <option value="clear">Clear</option>
+        <option value="heavy">Heavy</option>
+        <option value="social">Social</option>
+        <option value="low">Low</option>
+      </select>
+      <textarea id="log-note" placeholder="Note (optional)"></textarea>
+      <button onclick="submitLog()">Submit Log</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Recent Logs</div>
+      <div id="log-list"><p class="small">Loading...</p></div>
+    </div>
+  </div>
+
+  <div id="panel-build" class="panel">
+    <div class="card">
+      <div class="card-title">🔨 Build Tracker</div>
+      <div id="build-status"><p class="small">Loading...</p></div>
+    </div>
+  </div>
+
+  <div id="panel-review" class="panel">
+    <div class="card">
+      <div class="card-title">📆 Review</div>
+      <div id="review-content"><p class="small">Sunday review summary goes here.</p></div>
+    </div>
+  </div>
+
+  <div id="panel-reminders" class="panel">
+    <div class="card">
+      <div class="card-title">⏰ Reminders</div>
+      <div id="reminders-list"><p class="small">Loading...</p></div>
+    </div>
+  </div>
+
+  <nav class="nav-bar">
+    <button class="nav-btn active" data-panel="dashboard" onclick="switchPanel('dashboard')"><span class="icon">🏠</span>Home</button>
+    <button class="nav-btn" data-panel="chat" onclick="switchPanel('chat')"><span class="icon">💬</span>Chat</button>
+    <button class="nav-btn" data-panel="inbox" onclick="switchPanel('inbox')"><span class="icon">📥</span>Inbox</button>
+    <button class="nav-btn" data-panel="log" onclick="switchPanel('log')"><span class="icon">📝</span>Log</button>
+    <button class="nav-btn" data-panel="build" onclick="switchPanel('build')"><span class="icon">🔨</span>Build</button>
+  </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/pocketbase@0.21.1/dist/pocketbase.umd.js"></script>
+<script src="config.js"></script>
+<script src="pb.js"></script>
+<script src="offline.js"></script>
+<script src="chat.js"></script>
+<script>
+let currentMode = 1;
+
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.mode) === mode);
+  });
+  document.getElementById('mode-badge').textContent = `Mode: ${mode}`;
+}
+
+function switchPanel(panelId) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`panel-${panelId}`).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.panel === panelId);
+  });
+  if (panelId === 'inbox') loadInbox();
+  if (panelId === 'log') loadLogs();
+  if (panelId === 'build') loadBuild();
+  if (panelId === 'reminders') loadReminders();
+  if (panelId === 'dashboard') loadDashboard();
+}
+
+// --- Inbox ---
+async function addInbox() {
+  const input = document.getElementById('inbox-input');
+  const text = input.value.trim();
+  if (!text) return;
+  try {
+    await addInboxItem(text, 'idea');
+    input.value = '';
+    loadInbox();
+  } catch (e) {
+    if (!navigator.onLine) {
+      addToQueue(COLLECTIONS.inbox, { entry: text, tag: 'idea', date: new Date().toISOString(), processed: false });
+      loadInbox();
+    } else {
+      alert('Error: ' + e.message);
+    }
+  }
+}
+
+async function loadInbox() {
+  const list = document.getElementById('inbox-list');
+  try {
+    const result = await getInboxItems(false);
+    if (result.items.length === 0) { list.innerHTML = '<p class="small">All caught up! 🎯</p>'; return; }
+    list.innerHTML = result.items.map(item => `
+      <div class="entry-item">
+        <div><div>${item.entry}</div><span class="entry-tag">${item.tag}</span> <span class="small">${new Date(item.date).toLocaleDateString()}</span></div>
+        <button onclick="markProcessed('${item.id}')" class="secondary" style="padding:4px 8px;font-size:12px;">✓</button>
+      </div>
+    `).join('');
+  } catch (e) {
+    list.innerHTML = `<p class="small">Error: ${e.message}</p>`;
+  }
+}
+
+async function markProcessed(id) {
+  try {
+    await markInboxProcessed(id);
+    loadInbox();
+  } catch (e) { alert('Error: ' + e.message); }
+}
+
+// --- Log ---
+async function submitLog() {
+  const type = document.getElementById('log-type').value;
+  const amount = parseFloat(document.getElementById('log-amount').value) || 0;
+  const category = document.getElementById('log-category').value;
+  const mood = document.getElementById('log-mood').value;
+  const note = document.getElementById('log-note').value.trim();
+  try {
+    await addLogEntry(type, amount, category, mood, note);
+    document.getElementById('log-amount').value = '';
+    document.getElementById('log-note').value = '';
+    loadLogs();
+    alert('Log submitted!');
+  } catch (e) {
+    if (!navigator.onLine) {
+      addToQueue(COLLECTIONS.log, { type, amount, category, mood, note, date: new Date().toISOString() });
+      loadLogs();
+      alert('Offline: saved locally.');
+    } else {
+      alert('Error: ' + e.message);
+    }
+  }
+}
+
+async function loadLogs() {
+  const list = document.getElementById('log-list');
+  try {
+    const result = await getLogEntries();
+    if (result.items.length === 0) { list.innerHTML = '<p class="small">No logs yet.</p>'; return; }
+    list.innerHTML = result.items.slice(0, 10).map(item => `
+      <div class="entry-item">
+        <div><div>${item.type} - ${item.category} ${item.amount ? 'Ksh '+item.amount : ''}</div><span class="small">${new Date(item.date).toLocaleDateString()} ${item.mood ? '😊'+item.mood : ''}</span></div>
+      </div>
+    `).join('');
+  } catch (e) {
+    list.innerHTML = `<p class="small">Error: ${e.message}</p>`;
+  }
+}
+
+// --- Build ---
+async function loadBuild() {
+  const div = document.getElementById('build-status');
+  try {
+    const result = await getBuildProgress('FMS');
+    if (result.items.length === 0) { div.innerHTML = '<p class="small">No build data yet.</p>'; return; }
+    div.innerHTML = result.items.map(item => `
+      <div class="entry-item"><span>Step ${item.step_number}: ${item.step_name}</span><span class="entry-tag">${item.status}</span></div>
+    `).join('');
+  } catch (e) {
+    div.innerHTML = `<p class="small">Error: ${e.message}</p>`;
+  }
+}
+
+// --- Reminders ---
+async function loadReminders() {
+  const div = document.getElementById('reminders-list');
+  try {
+    const result = await getReminders({ done: false });
+    if (result.items.length === 0) { div.innerHTML = '<p class="small">No pending reminders. 🎯</p>'; return; }
+    div.innerHTML = result.items.map(item => `
+      <div class="entry-item">
+        <div><div>${item.text}</div><span class="small">${item.time} · ${item.frequency}</span></div>
+        <button onclick="markReminderDone('${item.id}')" class="secondary" style="padding:4px 8px;font-size:12px;">✓</button>
+      </div>
+    `).join('');
+  } catch (e) {
+    div.innerHTML = `<p class="small">Error: ${e.message}</p>`;
+  }
+}
+
+async function markReminderDone(id) {
+  try {
+    await markReminderDone(id);
+    loadReminders();
+  } catch (e) { alert('Error: ' + e.message); }
+}
+
+// --- Dashboard ---
+async function loadDashboard() {
+  const div = document.getElementById('dashboard-content');
+  try {
+    const inboxCount = await getInboxItems(false);
+    const logCount = await getLogEntries();
+    div.innerHTML = `
+      <div class="flex-between"><span>📥 Inbox: ${inboxCount.items.length} items</span><span>📝 Logs: ${logCount.items.length} entries</span></div>
+      <div class="mt-8 small">Mode: ${currentMode} · Build: FMS · Status: In progress</div>
+    `;
+  } catch (e) {
+    div.innerHTML = '<p class="small">Dashboard loading...</p>';
+  }
+}
+
+// --- Chat ---
+async function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  const box = document.getElementById('chat-box');
+  box.innerHTML += `<div class="chat-msg user"><div class="role">You</div>${msg}</div>`;
+  input.value = '';
+  box.scrollTop = box.scrollHeight;
+  const context = `Ryan is 22, in 5th year EE, Nairobi. Building ESO Life OS. FMS active. Current mode: ${currentMode}. Values: Freedom, Truth, Love, Knowledge, Growth, Integrity, Beauty. North star: Peace.`;
+  document.getElementById('ai-status').textContent = 'Thinking...';
+  try {
+    const reply = await sendChatMessage(msg, currentMode, context);
+    box.innerHTML += `<div class="chat-msg ai"><div class="role">AI</div>${reply.replace(/\n/g, '<br>')}</div>`;
+  } catch (e) {
+    box.innerHTML += `<div class="chat-msg ai"><div class="role">AI</div>Error: ${e.message}</div>`;
+  }
+  document.getElementById('ai-status').textContent = 'Ready';
+  box.scrollTop = box.scrollHeight;
+}
+
+// --- Init ---
+document.addEventListener('DOMContentLoaded', () => {
+  setMode(1);
+  loadDashboard();
+  loadInbox();
+  loadLogs();
+  loadBuild();
+  loadReminders();
+  document.getElementById('chat-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+  document.getElementById('inbox-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') addInbox(); });
+});
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(() => console.log('Service Worker registered'))
+    .catch(err => console.error('SW registration failed:', err));
+}
+</script>
+</body>
+</html>
