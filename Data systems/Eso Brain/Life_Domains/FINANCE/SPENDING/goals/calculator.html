@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECS — Expenditure Control System</title>
+  <meta name="description" content="Personal finance allocation calculator for the ECS system. Layer 1 survival mode and Layer 2 growth mode for Nairobi, Kenya." />
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d0f14;
+      --surface:     #151820;
+      --surface2:    #1c2030;
+      --border:      #252a38;
+      --text:        #e8eaf0;
+      --muted:       #6b7280;
+      --green:       #22c55e;
+      --green-dim:   #16532a;
+      --green-bg:    #0d2118;
+      --amber:       #f59e0b;
+      --amber-dim:   #78440a;
+      --amber-bg:    #261a04;
+      --blue:        #3b82f6;
+      --blue-dim:    #1d3a7a;
+      --blue-bg:     #091428;
+      --radius:      12px;
+      --radius-sm:   8px;
+      --font:        'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 1.5rem 1rem 4rem;
+    }
+
+    /* ─── Header ────────────────────────────────────────────────── */
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .header .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.25rem 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .header p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+
+    /* ─── Container ─────────────────────────────────────────────── */
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ─── Input Panel ────────────────────────────────────────────── */
+    .input-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .input-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0 0.75rem;
+      transition: border-color 0.2s;
+    }
+    .input-row:focus-within {
+      border-color: var(--blue);
+    }
+    .currency-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    #deposit-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 1.25rem;
+      font-weight: 600;
+      padding: 0.75rem 0;
+      width: 100%;
+    }
+    #deposit-input::placeholder { color: var(--border); }
+
+    /* ─── Layer Toggle ───────────────────────────────────────────── */
+    .toggle-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .toggle-btn {
+      flex: 1;
+      padding: 0.6rem 0.5rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .toggle-btn.active-l1 {
+      background: var(--green-bg);
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .toggle-btn.active-l2 {
+      background: var(--blue-bg);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    .toggle-btn:hover:not(.active-l1):not(.active-l2) {
+      border-color: var(--muted);
+      color: var(--text);
+    }
+
+    /* ─── Info bar ───────────────────────────────────────────────── */
+    .info-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+      padding: 0 0.1rem;
+    }
+    .info-bar .mode-tag {
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .mode-tag.l1 { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-dim); }
+    .mode-tag.l2 { background: var(--blue-bg);  color: var(--blue);  border: 1px solid var(--blue-dim);  }
+
+    /* ─── Cards ──────────────────────────────────────────────────── */
+    .cards { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1rem;
+      transition: transform 0.15s, border-color 0.2s;
+    }
+    .card:hover { transform: translateX(2px); }
+
+    .card.green { border-left: 3px solid var(--green); background: var(--green-bg); }
+    .card.amber  { border-left: 3px solid var(--amber); background: var(--amber-bg); }
+    .card.blue   { border-left: 3px solid var(--blue);  background: var(--blue-bg);  }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.55rem;
+    }
+    .card-left { display: flex; flex-direction: column; gap: 0.15rem; }
+    .card-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .card-meta {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .card-right { text-align: right; }
+    .card-amount {
+      font-size: 1rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .card.green .card-amount { color: var(--green); }
+    .card.amber  .card-amount { color: var(--amber); }
+    .card.blue   .card-amount { color: var(--blue);  }
+    .card-pct {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    /* ─── Progress Bar ───────────────────────────────────────────── */
+    .bar-track {
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card.green .bar-fill { background: var(--green); }
+    .card.amber  .bar-fill { background: var(--amber); }
+    .card.blue   .bar-fill { background: var(--blue);  }
+
+    /* ─── Total Bar ──────────────────────────────────────────────── */
+    .total-bar {
+      margin-top: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .total-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .total-amount {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+    .total-ok   { color: var(--green); }
+    .total-warn { color: var(--amber); }
+
+    /* ─── Empty state ────────────────────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .empty-icon { font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.4; }
+
+    /* ─── Footer ─────────────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.65rem;
+      color: var(--border);
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="badge">ECS · Nairobi, Kenya</div>
+    <h1>Expenditure Control System</h1>
+    <p>Enter a deposit to allocate across your spending buckets</p>
+  </div>
+
+  <!-- Input -->
+  <div class="input-panel">
+    <label class="input-label" for="deposit-input">Deposit Amount</label>
+    <div class="input-row">
+      <span class="currency-label">KES</span>
+      <input
+        type="number"
+        id="deposit-input"
+        placeholder="0"
+        min="0"
+        step="any"
+        inputmode="decimal"
+        autocomplete="off"
+      />
+    </div>
+  </div>
+
+  <!-- Toggle -->
+  <div class="toggle-row">
+    <button class="toggle-btn active-l1" id="btn-l1" onclick="switchLayer(1)">
+      Layer 1 — Survival
+    </button>
+    <button class="toggle-btn" id="btn-l2" onclick="switchLayer(2)">
+      Layer 2 — Growth
+    </button>
+  </div>
+
+  <!-- Info bar -->
+  <div class="info-bar">
+    <span id="mode-description">Base: KES 12,000 · Sealed buckets</span>
+    <span class="mode-tag l1" id="mode-tag">SURVIVAL</span>
+  </div>
+
+  <!-- Results -->
+  <div id="results">
+    <div class="empty-state">
+      <div class="empty-icon">⬡</div>
+      Enter a deposit amount above to see your allocations
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">ECS v1.0 · 2026 · All buckets sealed</div>
+
+</div>
+
+<script>
+  /* ── Layer Definitions ────────────────────────────────────────── */
+
+  const LAYER1 = [
+    { name: "Rent / Housing",         pct: 41.67, color: "green", meta: "Hard locked — paid first" },
+    { name: "Food & Groceries",       pct: 33.33, color: "green", meta: "Sealed bucket — food only" },
+    { name: "Transport",              pct: 10.00, color: "green", meta: "Essential travel only" },
+    { name: "Utilities & Sanitation", pct:  8.33, color: "green", meta: "Soap, water, electricity" },
+    { name: "Herbs",                  pct:  5.00, color: "amber", meta: "Hard capped — KES 600 max" },
+    { name: "Emergency Fund",         pct:  1.67, color: "blue",  meta: "Auto-rolls from remainder" },
+  ];
+
+  const LAYER2 = [
+    { name: "Vault",                  pct: 20, color: "blue",  meta: "Wealth building — untouched" },
+    { name: "Emergency",              pct: 10, color: "green", meta: "Safety net — sealed" },
+    { name: "Herbs",                  pct:  8, color: "amber", meta: "Capped category" },
+    { name: "Grooming",               pct:  5, color: "amber", meta: "Appearance & hygiene" },
+    { name: "Entertainment & Junk",   pct:  5, color: "amber", meta: "Controlled leisure" },
+    { name: "Social & Women",         pct:  7, color: "amber", meta: "Relationships & outings" },
+    { name: "Gifting & Helping",      pct:  5, color: "amber", meta: "Generosity bucket" },
+    { name: "Equipment & Projects",   pct: 15, color: "blue",  meta: "Tools, builds, upgrades" },
+    { name: "Business & Investments", pct: 15, color: "blue",  meta: "Income-generating assets" },
+    { name: "Buffer & Rollover",      pct: 10, color: "blue",  meta: "Rollover — never spent" },
+  ];
+
+  /* ── State ────────────────────────────────────────────────────── */
+  let activeLayer = 1;
+
+  /* ── Layer Switch ─────────────────────────────────────────────── */
+  function switchLayer(n) {
+    activeLayer = n;
+
+    const btnL1 = document.getElementById("btn-l1");
+    const btnL2 = document.getElementById("btn-l2");
+    const modeTag = document.getElementById("mode-tag");
+    const modeDesc = document.getElementById("mode-description");
+
+    btnL1.className = "toggle-btn" + (n === 1 ? " active-l1" : "");
+    btnL2.className = "toggle-btn" + (n === 2 ? " active-l2" : "");
+
+    if (n === 1) {
+      modeTag.textContent = "SURVIVAL";
+      modeTag.className = "mode-tag l1";
+      modeDesc.textContent = "Base: KES 12,000 · Sealed buckets";
+    } else {
+      modeTag.textContent = "GROWTH";
+      modeTag.className = "mode-tag l2";
+      modeDesc.textContent = "Extra income above KES 12,000 · 10 categories";
+    }
+
+    render();
+  }
+
+  /* ── Format ───────────────────────────────────────────────────── */
+  function fmt(n) {
+    return n.toLocaleString("en-KE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  /* ── Render ───────────────────────────────────────────────────── */
+  function render() {
+    const raw = parseFloat(document.getElementById("deposit-input").value);
+    const resultsEl = document.getElementById("results");
+
+    if (!raw || isNaN(raw) || raw <= 0) {
+      resultsEl.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">⬡</div>
+          Enter a deposit amount above to see your allocations
+        </div>`;
+      return;
+    }
+
+    const amount = raw;
+    const categories = activeLayer === 1 ? LAYER1 : LAYER2;
+
+    /* Build cards */
+    let cardsHtml = '<div class="cards">';
+    let runningTotal = 0;
+
+    categories.forEach(cat => {
+      const allocated = amount * (cat.pct / 100);
+      runningTotal += allocated;
+
+      /* Cap herb at 600 in L1 */
+      let displayAmount = allocated;
+      let cappedNote = "";
+      if (activeLayer === 1 && cat.name === "Herbs" && allocated > 600) {
+        displayAmount = 600;
+        cappedNote = " · CAPPED";
+      }
+
+      cardsHtml += `
+        <div class="card ${cat.color}">
+          <div class="card-top">
+            <div class="card-left">
+              <span class="card-name">${cat.name}</span>
+              <span class="card-meta">${cat.meta}${cappedNote}</span>
+            </div>
+            <div class="card-right">
+              <div class="card-amount">KES ${fmt(displayAmount)}</div>
+              <div class="card-pct">${cat.pct}%</div>
+            </div>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: ${cat.pct}%"></div>
+          </div>
+        </div>`;
+    });
+
+    cardsHtml += '</div>';
+
+    /* Total confirmation */
+    const totalPct = categories.reduce((s, c) => s + c.pct, 0);
+    const isBalanced = Math.abs(totalPct - 100) < 0.05;
+    const totalClass = isBalanced ? "total-ok" : "total-warn";
+    const totalLabel = isBalanced ? "✓ Fully Allocated" : "⚠ Check Percentages";
+
+    cardsHtml += `
+      <div class="total-bar">
+        <span class="total-label">${totalLabel}</span>
+        <span class="total-amount ${totalClass}">KES ${fmt(amount)}</span>
+      </div>`;
+
+    resultsEl.innerHTML = cardsHtml;
+  }
+
+  /* ── Events ───────────────────────────────────────────────────── */
+  document.getElementById("deposit-input").addEventListener("input", render);
+</script>
+
+</body>
+</html>

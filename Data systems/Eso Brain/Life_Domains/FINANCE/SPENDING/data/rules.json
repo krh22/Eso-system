@@ -1,0 +1,271 @@
+{
+  "layer_1_buckets": [
+    {
+      "name": "rent",
+      "label": "Rent / Housing",
+      "amount_kes": 5000,
+      "percentage": 41.67,
+      "lock_type": "hard_locked",
+      "flexible": false,
+      "flex_min": null,
+      "flex_max": null,
+      "rule": "First payment on every deposit. No exceptions. Paid before any other bucket receives funds."
+    },
+    {
+      "name": "food",
+      "label": "Food and Groceries",
+      "amount_kes": 4000,
+      "percentage": 33.33,
+      "lock_type": "hard_locked",
+      "flexible": false,
+      "flex_min": null,
+      "flex_max": null,
+      "rule": "Food only. System blocks any other use. Eating out counts against this bucket."
+    },
+    {
+      "name": "transport",
+      "label": "Transport",
+      "amount_kes": 1200,
+      "percentage": 10.00,
+      "lock_type": "capped",
+      "flexible": true,
+      "flex_min": 800,
+      "flex_max": 1500,
+      "rule": "Essential travel only. Matatu, boda boda, and emergency fuel. No social or leisure travel."
+    },
+    {
+      "name": "utilities",
+      "label": "Utilities and Sanitation",
+      "amount_kes": 1000,
+      "percentage": 8.33,
+      "lock_type": "capped",
+      "flexible": true,
+      "flex_min": 800,
+      "flex_max": 1200,
+      "rule": "Sanitation and cleaning only. Covers electricity, water, internet, soap, and cleaning supplies."
+    },
+    {
+      "name": "herbs",
+      "label": "Herbs",
+      "amount_kes": 600,
+      "percentage": 5.00,
+      "lock_type": "capped",
+      "flexible": true,
+      "flex_min": 300,
+      "flex_max": 800,
+      "rule": "Hard monthly cap. When empty the system blocks all further herb spending for the month. No rollover."
+    },
+    {
+      "name": "remainder",
+      "label": "Remainder",
+      "amount_kes": 200,
+      "percentage": 1.67,
+      "lock_type": "auto_roll",
+      "flexible": false,
+      "flex_min": null,
+      "flex_max": null,
+      "rule": "Automatically moves to the emergency bucket on every deposit. Cannot be spent directly."
+    }
+  ],
+
+  "layer_2_buckets": [
+    {
+      "name": "vault",
+      "label": "Vault",
+      "percentage": 20,
+      "lock_type": "smart_contract",
+      "storage_method": "solana_blockchain",
+      "cooldown_hours": 2160,
+      "flexible": false,
+      "flex_min_percent": null,
+      "flex_max_percent": null,
+      "rule": "The moment vault allocation is calculated it is immediately sent to a Solana time-lock smart contract for 90 days. The money cannot be accessed by anyone including the owner until the contract timer expires. There is no override, no recovery before time, and no exceptions."
+    },
+    {
+      "name": "fee_buffer",
+      "label": "Fee Buffer",
+      "percentage": 1,
+      "lock_type": "system_held",
+      "storage_method": "system_wallet",
+      "cooldown_hours": 0,
+      "flexible": false,
+      "flex_min_percent": null,
+      "flex_max_percent": null,
+      "rule": "Held in system to cover Solana transaction fees estimated at less than 0.01 USD per transaction. This buffer ensures vault deposits never fail due to insufficient fees."
+    },
+    {
+      "name": "emergency",
+      "label": "Emergency",
+      "percentage": 10,
+      "lock_type": "app_locked",
+      "storage_method": "app_internal",
+      "cooldown_hours": 48,
+      "flexible": false,
+      "flex_min_percent": null,
+      "flex_max_percent": null,
+      "rule": "Locked inside the app. Requires a logged reason and a 48-hour waiting period before any release. No instant access."
+    },
+    {
+      "name": "herbs",
+      "label": "Herbs",
+      "percentage": 8,
+      "lock_type": "capped",
+      "storage_method": "app_internal",
+      "cooldown_hours": 0,
+      "flexible": true,
+      "flex_min_percent": 5,
+      "flex_max_percent": 10,
+      "rule": "Monthly cap. When empty the system blocks further spending. Flexible within defined range."
+    },
+    {
+      "name": "grooming",
+      "label": "Grooming",
+      "percentage": 5,
+      "lock_type": "capped",
+      "storage_method": "app_internal",
+      "cooldown_hours": 0,
+      "flexible": true,
+      "flex_min_percent": 3,
+      "flex_max_percent": 7,
+      "rule": "Appearance and hygiene only. Flexible within defined range. Monthly cap enforced."
+    },
+    {
+      "name": "entertainment_and_junk",
+      "label": "Entertainment and Junk Food",
+      "percentage": 5,
+      "lock_type": "capped",
+      "storage_method": "app_internal",
+      "cooldown_hours": 0,
+      "flexible": true,
+      "flex_min_percent": 3,
+      "flex_max_percent": 7,
+      "rule": "Controlled leisure spending. Flexible within defined range. Cap enforced monthly."
+    },
+    {
+      "name": "women_and_social",
+      "label": "Women and Social",
+      "percentage": 7,
+      "lock_type": "capped",
+      "storage_method": "app_internal",
+      "cooldown_hours": 0,
+      "flexible": true,
+      "flex_min_percent": 5,
+      "flex_max_percent": 10,
+      "rule": "Relationships and outings. Flexible within defined range. Monthly cap enforced."
+    },
+    {
+      "name": "giving",
+      "label": "Giving",
+      "percentage": 5,
+      "lock_type": "capped",
+      "storage_method": "app_internal",
+      "cooldown_hours": 0,
+      "flexible": false,
+      "flex_min_percent": null,
+      "flex_max_percent": null,
+      "rule": "Capped. Resets every 30 days. When empty, giving stops until the next month."
+    },
+    {
+      "name": "equipment_and_projects",
+      "label": "Equipment and Projects",
+      "percentage": 15,
+      "lock_type": "purpose_locked",
+      "storage_method": "app_internal",
+      "cooldown_hours": 0,
+      "flexible": false,
+      "flex_min_percent": null,
+      "flex_max_percent": null,
+      "rule": "Locked to stated purpose. Requires a written reason before any withdrawal. No general spending."
+    },
+    {
+      "name": "business_and_investments",
+      "label": "Business and Investments",
+      "percentage": 14,
+      "lock_type": "purpose_locked",
+      "storage_method": "app_internal",
+      "cooldown_hours": 0,
+      "flexible": false,
+      "flex_min_percent": null,
+      "flex_max_percent": null,
+      "rule": "Locked until the saving module is active. Funds yield-generating assets later."
+    },
+    {
+      "name": "buffer_and_rollover",
+      "label": "Buffer and Rollover",
+      "percentage": 10,
+      "lock_type": "system_held",
+      "storage_method": "app_internal",
+      "cooldown_hours": 0,
+      "flexible": false,
+      "flex_min_percent": null,
+      "flex_max_percent": null,
+      "rule": "Stays in system. Rolls to next month or gets added to the next vault deployment. Never spent directly."
+    }
+  ],
+
+  "global_rules": {
+    "money_cannot_move_between_categories": true,
+    "empty_bucket_blocks_spending": true,
+    "vault_uses_solana_smart_contract": true,
+    "vault_lock_duration_days": 90,
+    "vault_early_withdrawal_possible": false,
+    "vault_override_possible": false,
+    "solana_transaction_fee_buffer_percent": 1,
+    "emergency_requires_logged_reason": true,
+    "giving_resets_every_days": 30,
+    "all_transactions_logged": true,
+    "extra_income_never_enters_layer_1": true,
+    "flexible_values_require_24hr_cooldown_to_change": true,
+    "every_value_change_is_logged": true,
+    "system_cannot_send_more_than_bucket_balance": true
+  },
+
+  "solana_settings": {
+    "network": "solana",
+    "token": "USDC",
+    "fiat_bridge": "Binance P2P",
+    "fiat_bridge_method": "M-Pesa KES to USDC via Binance P2P zero fees",
+    "token_note": "USDC is used instead of USDT because it has better native Solana support, lower fees, and is fully regulated and stable at 1 USD.",
+    "lock_duration_days": 90,
+    "auto_deploy_on_deposit": true,
+    "estimated_fee_per_transaction_usd": 0.00025,
+    "fee_buffer_percent": 1,
+    "conversion_rule": "Manual Entry: Use the prevailing market rate (e.g. Binance P2P or Google Finance) at the moment of deployment. Log the rate in the Vault Deployment Log notes.",
+    "wallet_address": "SOLANA_WALLET_ADDRESS_GOES_HERE",
+    "program_id": "to_be_filled_when_contract_is_deployed",
+    "last_deployment_date": null,
+    "next_unlock_date": null,
+    "total_locked_on_chain_usdc": 0,
+    "deployment_log": []
+  },
+
+  "flexible_value_change_log": [
+    {
+      "note": "SCHEMA REFERENCE: Every flexible value change requires this structure.",
+      "fields": {
+        "date": "YYYY-MM-DD",
+        "time": "HH:MM",
+        "category_name": "e.g. herbs",
+        "old_value": "numeric or string",
+        "new_value": "numeric or string",
+        "reason": "mandatory string",
+        "cooldown_started": "ISO timestamp",
+        "cooldown_expires": "ISO timestamp (current + 24hrs)",
+        "approved": "boolean"
+      }
+    }
+  ],
+
+  "system_state": {
+    "current_active_layer": "both",
+    "last_deposit_date": null,
+    "total_deposited_this_month_kes": 0,
+    "total_spent_this_month_kes": 0,
+    "vault_balance_on_chain_usdc": 0,
+    "emergency_balance_kes": 0,
+    "giving_balance_kes": 0,
+    "giving_reset_date": null,
+    "giving_note": "Logic: Giving bucket balance resets to Category.Amount every 30 days. Reset is triggered if today >= giving_reset_date. On reset, next reset = today + 30 days.",
+    "fee_buffer_balance_kes": 0
+  }
+}

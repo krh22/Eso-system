@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "module_name": "saving",
+    "status": "placeholder",
+    "activated": false,
+    "last_updated": null
+  },
+  "tiers": [
+    {
+      "name": "Tier 1: Emergency Buffer",
+      "target_kes": 36000,
+      "current_balance": 0,
+      "percent_complete": 0,
+      "status": "active"
+    },
+    {
+      "name": "Tier 2: Life Upgrade Fund",
+      "target_kes": 100000,
+      "current_balance": 0,
+      "percent_complete": 0,
+      "status": "locked"
+    },
+    {
+      "name": "Tier 3: Wealth Building",
+      "target_kes": null,
+      "current_balance": 0,
+      "percent_complete": 0,
+      "status": "locked"
+    }
+  ],
+  "global_state": {
+    "total_saved": 0,
+    "active_tier": "Tier 1",
+    "last_deposit": null
+  },
+  "history": []
+}

@@ -1,1 +1,0 @@
-Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Alarm! 5 minutes from now.')

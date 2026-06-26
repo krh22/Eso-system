@@ -1,0 +1,20 @@
+[package]
+name = "ecs-vault"
+version = "0.1.0"
+description = "ECS Expenditure Control System - 90 Day Vault"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "ecs_vault"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+
+[dependencies]
+anchor-lang = "0.28.0"
+anchor-spl = "0.28.0"

@@ -1,0 +1,27 @@
+{
+  "name": "09-handover-bot",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": "0 0 * * *",
+        "description": "Every session end or daily close"
+      },
+      "name": "Scheduled Trigger",
+      "type": "n8n-nodes-base.cron",
+      "position": [100, 200]
+    },
+    {
+      "parameters": {
+        "command": "node eso/worker/generate-handover.js"
+      },
+      "name": "Compress Handover",
+      "type": "n8n-nodes-base.executeCommand",
+      "position": [300, 200]
+    }
+  ],
+  "connections": {
+    "Scheduled Trigger": {
+      "main": [[{ "node": "Compress Handover", "type": "main", "index": 0 }]]
+    }
+  }
+}

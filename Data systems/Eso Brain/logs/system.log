@@ -1,0 +1,7 @@
+# System log — Eso Life OS
+# Format: [YYYY-MM-DD HH:MM] [LEVEL] [DOMAIN] message
+# Levels: INFO | WARN | ERROR
+# Rotate: keep 30 days, compress older
+[2026-04-19 00:00] [INFO] [SYSTEM] system.log created
+[2026-04-19 00:00] [INFO] [SYSTEM] runbook.md created
+[2026-04-19 00:00] [INFO] [SYSTEM] domain template created

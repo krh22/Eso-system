@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "last_full_reset_date": "2026-04-24",
+    "current_month": "April 2026",
+    "total_deposited_this_month": 0,
+    "total_spent_this_month": 0,
+    "vault_balance_on_chain_usdc": 0
+  },
+  "layer_1_state": {
+    "rent": { "name": "Rent", "allocated": 5000, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "food": { "name": "Food", "allocated": 4000, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "transport": { "name": "Transport", "allocated": 1200, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "utilities": { "name": "Utilities", "allocated": 1000, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "herbs": { "name": "Herbs", "allocated": 600, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "emergency": { "name": "Emergency", "allocated": 200, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" }
+  },
+  "layer_2_state": {
+    "vault": { "name": "Vault", "percentage": 20, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "fee_buffer": { "name": "Fee Buffer", "percentage": 1, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "emergency": { "name": "Emergency", "percentage": 10, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "herbs": { "name": "Herbs", "percentage": 8, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "grooming": { "name": "Grooming", "percentage": 5, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "entertainment_and_junk": { "name": "Entertainment and Junk Food", "percentage": 5, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "women_and_social": { "name": "Women and Social", "percentage": 7, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "giving": { "name": "Giving", "percentage": 5, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "equipment_and_projects": { "name": "Equipment and Projects", "percentage": 15, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "business_and_investments": { "name": "Business and Investments", "percentage": 14, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" },
+    "buffer_and_rollover": { "name": "Buffer and Rollover", "percentage": 10, "current_balance": 0, "spent_this_month": 0, "last_updated": "2026-04-20T14:25:00Z", "status": "empty" }
+  }
+}

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECS · Command Dashboard</title>
+  <style>
+    /* ─── Design System ────────────────────────────────────────── */
+    :root {
+      --bg: #090b10;
+      --surface: #12151c;
+      --surface2: #1a1e28;
+      --border: #242935;
+      --border-bright: #3a3f50;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --accent-green: #22c55e;
+      --accent-blue: #3b82f6;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 5rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    /* ─── Header ────────────────────────────────────────────────── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .header-info h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .header-info p {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
+    }
+
+    /* ─── Stats Grid ────────────────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .stat-card.primary { border-top: 4px solid var(--accent-blue); }
+    .stat-card.secondary { border-top: 4px solid var(--accent-green); }
+    .stat-card.warning { border-top: 4px solid var(--accent-amber); }
+
+    /* ─── Main Content Layout ──────────────────────────────────── */
+    .layout-main {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 2rem;
+    }
+    @media (max-width: 900px) {
+      .layout-main { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Buckets ─────────────────────────────────────────────── */
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .bucket-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .bucket-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      transition: all 0.2s;
+    }
+    .bucket-card:hover { 
+      border-color: var(--border-bright);
+      transform: translateY(-2px);
+    }
+    .bucket-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .bucket-name { font-size: 0.85rem; font-weight: 600; }
+    .bucket-amount { font-size: 1rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+    
+    .progress-wrapper {
+      height: 6px;
+      background: var(--surface2);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .progress-bar {
+      height: 100%;
+      background: var(--accent-blue);
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+
+    /* ─── Sidebar ──────────────────────────────────────────────── */
+    .sidebar { display: flex; flex-direction: column; gap: 2rem; }
+    
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+    }
+    .panel-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── Transaction Form ─────────────────────────────────────── */
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--muted); }
+    .input-field {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .input-field:focus { border-color: var(--accent-blue); }
+    .btn-action {
+      width: 100%;
+      background: var(--accent-blue);
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    .btn-secondary {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .output-box {
+      margin-top: 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.75rem;
+      border-radius: var(--radius-sm);
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.75rem;
+      color: var(--accent-green);
+      white-space: pre-wrap;
+      display: none;
+    }
+
+    /* ─── Ledger Table ─────────────────────────────────────────── */
+    .ledger-container { margin-top: 3rem; }
+    .ledger-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .ledger-table th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      color: var(--muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+    .ledger-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .type-pill {
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+    .pill-deposit { background: var(--accent-green); color: black; }
+    .pill-spend { background: var(--accent-red); color: white; }
+
+    /* ─── File Upload ──────────────────────────────────────────── */
+    .file-input { display: none; }
+    .file-label {
+      font-size: 0.7rem;
+      padding: 0.4rem 0.8rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- Header -->
+  <header class="header">
+    <div class="header-info">
+      <h1>ECS Command Center</h1>
+      <p id="system-date">2026-04-20 · Nairobi, Kenya</p>
+    </div>
+    <div class="system-status">
+      <div class="status-dot"></div>
+      SYSTEM ACTIVE
+      <input type="file" id="data-upload" class="file-input" accept=".json">
+      <label for="data-upload" class="file-label">SYNC DATA</label>
+    </div>
+  </header>
+
+  <!-- High Level Stats -->
+  <div class="stats-grid">
+    <div class="stat-card primary">
+      <span class="stat-label">Net Worth</span>
+      <div class="stat-value" id="stat-net-worth">KES 0.00</div>
+    </div>
+    <div class="stat-card secondary">
+      <span class="stat-label">Income (MTD)</span>
+      <div class="stat-value" id="stat-income">KES 0.00</div>
+    </div>
+    <div class="stat-card warning">
+      <span class="stat-label">Spend (MTD)</span>
+      <div class="stat-value" id="stat-spend">KES 0.00</div>
+    </div>
+  </div>
+
+  <div class="layout-main">
+    
+    <!-- Main Dashboard -->
+    <div class="main-content">
+      
+      <!-- Layer 1 -->
+      <div class="section-title">
+        Layer 1 · Survival
+        <span style="color: var(--accent-green); font-size: 0.7rem; letter-spacing: 0.1em;">ACTIVE</span>
+      </div>
+      <div class="bucket-grid" id="layer-1-grid">
+        <!-- JS Inject -->
+      </div>
+
+      <!-- Layer 2 -->
+      <div class="section-title">
+        Layer 2 · Growth
+        <span style="color: var(--accent-blue); font-size: 0.7rem; letter-spacing: 0.1em;">READY</span>
+      </div>
+      <div class="bucket-grid" id="layer-2-grid">
+        <!-- JS Inject -->
+      </div>
+
+      <!-- Recent History -->
+      <div class="ledger-container">
+        <div class="section-title">Master Ledger History</div>
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Bucket</th>
+              <th>Amount</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody id="ledger-body">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--muted); padding: 2rem;">No transactions synced yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- Sidebar Tools -->
+    <aside class="sidebar">
+      
+      <!-- Transaction Form -->
+      <div class="panel">
+        <div class="panel-title">New Transaction</div>
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <select class="input-field" id="tx-type">
+            <option value="SPEND">SPEND</option>
+            <option value="DEPOSIT">DEPOSIT</option>
+            <option value="ALLOCATION">ALLOCATION</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bucket</label>
+          <select class="input-field" id="tx-bucket">
+            <!-- JS Inject -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amount (KES)</label>
+          <input type="number" class="input-field" id="tx-amount" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <input type="text" class="input-field" id="tx-desc" placeholder="What did you buy?">
+        </div>
+        <button class="btn-action" onclick="generateEntry()">Generate Log Entry</button>
+        <div class="output-box" id="tx-output"></div>
+      </div>
+
+      <!-- System Alerts -->
+      <div class="panel">
+        <div class="panel-title">Active Alerts</div>
+        <div id="alert-container">
+          <p style="color: var(--muted); font-size: 0.8rem;">Priority Clear. No active alerts.</p>
+        </div>
+      </div>
+
+      <!-- System Meta -->
+      <div class="panel" style="background: var(--surface2);">
+        <div class="panel-title">Vault Lock Status</div>
+        <div style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.25rem;">USDC 0.00</div>
+        <div style="font-size: 0.7rem; color: var(--muted);">90-Day Lock · No early unlock allowed.</div>
+      </div>
+
+    </aside>
+
+  </div>
+</div>
+
+<script>
+  /* ─── SEED DATA ────────────────────────────────────────────── */
+  let systemState = {
+    metadata: { netWorth: 0, income: 0, spend: 0, vaultUSDC: 0 },
+    layer_1: {},
+    layer_2: {}
+  };
+
+  /* ─── RENDERERS ────────────────────────────────────────────── */
+  function fmt(n) { return "KES " + (n || 0).toLocaleString("en-KE", { minimumFractionDigits: 2 }); }
+
+  function updateUI() {
+    // Stats
+    document.getElementById('stat-net-worth').textContent = fmt(systemState.metadata.netWorth);
+    document.getElementById('stat-income').textContent = fmt(systemState.metadata.income);
+    document.getElementById('stat-spend').textContent = fmt(systemState.metadata.spend);
+
+    // Grids
+    renderGrid('layer-1-grid', systemState.layer_1);
+    renderGrid('layer-2-grid', systemState.layer_2);
+
+    // Bucket Dropdown
+    const dropdown = document.getElementById('tx-bucket');
+    dropdown.innerHTML = '';
+    const allBuckets = { ...systemState.layer_1, ...systemState.layer_2 };
+    Object.keys(allBuckets).forEach(key => {
+      const b = allBuckets[key];
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = b.name;
+      dropdown.appendChild(opt);
+    });
+  }
+
+  function renderGrid(containerId, items) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    Object.keys(items).forEach(key => {
+      const b = items[key];
+      const capVal = b.allocated || 0;
+      const balVal = b.current_balance || 0;
+      const pct = capVal > 0 ? Math.min((balVal / capVal) * 100, 100) : 0;
+      
+      const card = `
+        <div class="bucket-card">
+          <div class="bucket-header">
+            <span class="bucket-name">${b.name}</span>
+            <span class="bucket-amount">${balVal.toLocaleString()}</span>
+          </div>
+          <div style="font-size: 0.65rem; color: var(--muted); margin-bottom: 0.25rem;">Allocated: ${capVal}</div>
+          <div class="progress-wrapper">
+            <div class="progress-bar" style="width: ${pct}%"></div>
+          </div>
+        </div>
+      `;
+      container.innerHTML += card;
+    });
+  }
+
+  /* ─── FORM LOGIC ───────────────────────────────────────────── */
+  function generateEntry() {
+    const type = document.getElementById('tx-type').value;
+    const bucket = document.getElementById('tx-bucket').value;
+    const amount = document.getElementById('tx-amount').value;
+    const desc = document.getElementById('tx-desc').value;
+    const date = new Date().toISOString().split('T')[0];
+    const time = new Date().toTimeString().split(' ')[0].substring(0, 5);
+
+    const logLine = `| ${date} | ${time} | ${type} | ${bucket} | ${amount} | ${desc} | MANUAL_LOG |`;
+    const output = document.getElementById('tx-output');
+    output.textContent = logLine;
+    output.style.display = 'block';
+  }
+
+  /* ─── DATA SYNC ────────────────────────────────────────────── */
+  document.getElementById('data-upload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const json = JSON.parse(evt.target.result);
+        console.log("Synced Data:", json);
+        
+        systemState.metadata.netWorth = (json.metadata.total_deposited_this_month - json.metadata.total_spent_this_month) || 0;
+        systemState.metadata.income = json.metadata.total_deposited_this_month || 0;
+        systemState.metadata.spend = json.metadata.total_spent_this_month || 0;
+        systemState.metadata.vaultUSDC = json.metadata.vault_balance_on_chain_usdc || 0;
+        
+        systemState.layer_1 = json.layer_1_state || {};
+        systemState.layer_2 = json.layer_2_state || {};
+        
+        updateUI();
+        alert("Data Synced Successfully.");
+      } catch (err) {
+        console.error(err);
+        alert("Error parsing JSON.");
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  // Init
+  updateUI();
+</script>
+
+</body>
+</html>

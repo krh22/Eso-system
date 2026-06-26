@@ -1,0 +1,222 @@
+[
+  {
+    "id": "claude",
+    "name": "Claude",
+    "type": "AI",
+    "access": "API/Web",
+    "best_for": "Projects, long-form thinking, writing, strategy, reasoning, building systems.",
+    "token_limit": 200000,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-11",
+    "note": "Avoid using for quick searches or social media."
+  },
+  {
+    "id": "antigravity",
+    "name": "Antigravity",
+    "type": "AI",
+    "access": "Local Client / The Engine",
+    "best_for": "File system manipulation, running code, organizing data, and local execution.",
+    "token_limit": null,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-19",
+    "note": "Master Worker; always verify file paths before executing edits."
+  },
+  {
+    "id": "openclaw",
+    "name": "OpenClaw",
+    "type": "AI",
+    "access": "Local Client",
+    "best_for": "PC agent tasks — opening apps, automating desktop actions.",
+    "token_limit": null,
+    "context_file": "Eso-Backup/AGENTS.md",
+    "last_used": "2026-04-01",
+    "note": "Avoid using for cloud-based reasoning."
+  },
+  {
+    "id": "deepseek",
+    "name": "DeepSeek",
+    "type": "AI",
+    "access": "API/Web",
+    "best_for": "Coding, mathematics, logic, technical problem solving.",
+    "token_limit": 64000,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-12",
+    "note": "Not suited for creative or social tasks."
+  },
+  {
+    "id": "grok",
+    "name": "Grok",
+    "type": "AI",
+    "access": "Web",
+    "best_for": "Social media, X/Twitter trends, real-time internet, pop culture.",
+    "token_limit": null,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-01",
+    "note": "Do not use for deep technical work."
+  },
+  {
+    "id": "gemini",
+    "name": "Gemini",
+    "type": "AI",
+    "access": "API/Web",
+    "best_for": "Image generation, Google Workspace integration, multimodal tasks.",
+    "token_limit": null,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-01",
+    "note": "Less effective for deep reasoning compared to Claude/DeepSeek."
+  },
+  {
+    "id": "turbo_ai",
+    "name": "Turbo AI",
+    "type": "AI",
+    "access": "Web",
+    "best_for": "Learning, summarizing YouTube videos, study material.",
+    "token_limit": null,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-01",
+    "note": "Not configured for agentic file tasks."
+  },
+  {
+    "id": "elevenlabs",
+    "name": "ElevenLabs",
+    "type": "AI",
+    "access": "API",
+    "best_for": "Voice generation, text to speech, realistic voice cloning.",
+    "token_limit": null,
+    "context_file": "N/A",
+    "last_used": "2026-04-01",
+    "note": "Used strictly for voice output."
+  },
+  {
+    "id": "whisper_ai",
+    "name": "Whisper AI",
+    "type": "AI",
+    "access": "Local/API",
+    "best_for": "Speech to text, transcription, voice input processing.",
+    "token_limit": null,
+    "context_file": "N/A",
+    "last_used": "2026-04-01",
+    "note": "Used strictly for voice input processing."
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity",
+    "type": "AI",
+    "access": "Web/API",
+    "best_for": "Real-time research, sourced answers, fact checking.",
+    "token_limit": null,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-01",
+    "note": "Best for Rule 11 — finding top researchers and live sources."
+  },
+  {
+    "id": "midjourney",
+    "name": "Midjourney",
+    "type": "AI",
+    "access": "Discord/API",
+    "best_for": "High quality image creation, visual design.",
+    "token_limit": null,
+    "context_file": "N/A",
+    "last_used": "2026-04-01",
+    "note": "Stronger image output than Gemini for art/design work."
+  },
+  {
+    "id": "wolfram_alpha",
+    "name": "Wolfram Alpha",
+    "type": "AI",
+    "access": "Web/API",
+    "best_for": "Math verification, scientific data, calculations.",
+    "token_limit": null,
+    "context_file": "N/A",
+    "last_used": "2026-04-01",
+    "note": "Best for Rule 12 audit — checking your working."
+  },
+  {
+    "id": "notebook_lm",
+    "name": "NotebookLM",
+    "type": "AI",
+    "access": "Web",
+    "best_for": "Deep document analysis, long document Q&A.",
+    "token_limit": null,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-01",
+    "note": "Good for studying saved notes."
+  },
+  {
+    "id": "ollama",
+    "name": "Ollama",
+    "type": "AI",
+    "access": "Local CLI",
+    "best_for": "Running local LLMs securely and offline.",
+    "token_limit": 8192,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-11",
+    "note": "Dependent on local hardware capabilities."
+  },
+  {
+    "id": "n8n_master_ai",
+    "name": "Master AI Workflow",
+    "type": "n8n_workflow",
+    "access": "localhost:5678",
+    "best_for": "Central logic routing and overall orchestration of Eso.",
+    "token_limit": null,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-12",
+    "note": "Core backbone script. Do not modify lightly."
+  },
+  {
+    "id": "n8n_backup_reminder",
+    "name": "Backup Reminder",
+    "type": "n8n_workflow",
+    "access": "localhost:5678",
+    "best_for": "Notifying and scheduling routine backups.",
+    "token_limit": null,
+    "context_file": "N/A",
+    "last_used": "2026-04-12",
+    "note": "Runs on automated CRON schedule."
+  },
+  {
+    "id": "n8n_file_logger",
+    "name": "File Change Logger",
+    "type": "n8n_workflow",
+    "access": "localhost:5678",
+    "best_for": "Monitoring the file system and updating action-log.md.",
+    "token_limit": null,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-12",
+    "note": "Provides the system's operational memory trace."
+  },
+  {
+    "id": "n8n_daily_briefing",
+    "name": "Daily Briefing",
+    "type": "n8n_workflow",
+    "access": "localhost:5678",
+    "best_for": "Aggregating tasks, news, and system stats for Ryan.",
+    "token_limit": null,
+    "context_file": "eso/sessions/handover.md",
+    "last_used": "2026-04-12",
+    "note": "Triggers at the start of the day."
+  },
+  {
+    "id": "n8n_boredom_detector",
+    "name": "Boredom Detector",
+    "type": "n8n_workflow",
+    "access": "localhost:5678",
+    "best_for": "Suggesting activities when the system detects idleness.",
+    "token_limit": null,
+    "context_file": "N/A",
+    "last_used": "2026-04-12",
+    "note": "Quirk: triggers proactively."
+  },
+  {
+    "id": "n8n_brain_dump",
+    "name": "Brain Dump Sorter",
+    "type": "n8n_workflow",
+    "access": "localhost:5678",
+    "best_for": "Categorizing unstructured notes into specific domain files.",
+    "token_limit": null,
+    "context_file": "_Inbox/Universal Inbox.md",
+    "last_used": "2026-04-12",
+    "note": "Monitors the Universal Inbox."
+  }
+]

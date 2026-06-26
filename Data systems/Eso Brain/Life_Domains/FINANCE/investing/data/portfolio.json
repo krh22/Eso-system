@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "module_name": "investing",
+    "status": "locked",
+    "activated": false,
+    "last_updated": null,
+    "note": "Do not activate until saving Tier 1 is complete."
+  },
+  "allocations": [],
+  "global_portfolio_state": {
+    "total_invested": 0,
+    "total_current_value": 0,
+    "unrealized_gain": 0,
+    "last_updated": null
+  },
+  "reinvestment_log": []
+}

@@ -1,0 +1,29 @@
+{
+  "name": "08-log-bot",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "C:/Users/PC/Documents/Eso Brain/07_Life_Domains/*.md",
+        "events": ["change"]
+      },
+      "name": "On Domain Change",
+      "type": "n8n-nodes-base.trigger",
+      "position": [100, 200]
+    },
+    {
+      "parameters": {
+        "file": "logs/system.log",
+        "content": "[{{$now}}] [INFO] [{{$json.domain}}] activity detected",
+        "append": true
+      },
+      "name": "Log to System",
+      "type": "n8n-nodes-base.file",
+      "position": [300, 200]
+    }
+  ],
+  "connections": {
+    "On Domain Change": {
+      "main": [[{ "node": "Log to System", "type": "main", "index": 0 }]]
+    }
+  }
+}

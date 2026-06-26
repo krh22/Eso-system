@@ -1,0 +1,27 @@
+{
+  "name": "10-paths-sync-bot",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "C:/Users/PC/Documents/Eso Brain/**/*",
+        "events": ["create", "rename"]
+      },
+      "name": "On File Change",
+      "type": "n8n-nodes-base.trigger",
+      "position": [100, 200]
+    },
+    {
+      "parameters": {
+        "command": "\"C:/Program Files/nodejs/node.exe\" eso/worker/sync-paths.js"
+      },
+      "name": "Sync Paths",
+      "type": "n8n-nodes-base.executeCommand",
+      "position": [300, 200]
+    }
+  ],
+  "connections": {
+    "On File Change": {
+      "main": [[{ "node": "Sync Paths", "type": "main", "index": 0 }]]
+    }
+  }
+}
