@@ -1,7 +1,7 @@
 // ESO Hub Configuration
 // Update this file when server URL changes
 
-const PB_URL = "https://bug-free-umbrella-5g6x7576qv9xc4q5p-8090.app.github.dev";
+const PB_URL = "https://pocketbase-production-e928.up.railway.app";
 
 const COLLECTIONS = {
   inbox: "Inbox",
